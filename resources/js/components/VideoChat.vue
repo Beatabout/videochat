@@ -221,21 +221,27 @@
       async placeVideoCall(id, name) {
         this.callPlaced = true;
         this.callPartner = name;
-        await this.getMediaPermission();
-        this.videoCallParams.peer1 = new Peer({
-          initiator: true,
-          trickle: false,
-          stream: this.videoCallParams.stream,
-          config: {
-            iceServers: [
-              {
-                urls: 'turn:relay1.expressturn.com:3478',
-                username: 'ef73DZVHTX95SQQLWY',
-                credential: 'nRnPSyT1a7t8tUCu',
-              },
-            ],
-          },
-        });
+        try {
+          const stream = await this.getMediaPermission();
+          // Продовжуйте з кодом для виклику відеодзвінка, використовуючи stream
+          this.videoCallParams.peer1 = new Peer({
+            initiator: true,
+            trickle: false,
+            stream: stream,  // Використовуйте отриманий потік
+            config: {
+              iceServers: [
+                {
+                  urls: 'turn:relay1.expressturn.com:3478',
+                  username: 'ef73DZVHTX95SQQLWY',
+                  credential: 'nRnPSyT1a7t8tUCu',
+                },
+              ],
+            },
+          });
+        } catch (error) {
+          // Обробка помилки отримання дозволу на доступ до медіа
+          alert('Дозвіл на доступ до камери або мікрофона не надано.');
+        }
   
         this.videoCallParams.peer1.on("signal", (data) => {
           // send user call signal
