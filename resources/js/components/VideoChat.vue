@@ -184,10 +184,11 @@
       },
   
       initializeCallListeners() {
+        
         this.videoCallParams.channel.here((users) => {
           this.videoCallParams.users = users;
         });
-  
+        
         this.videoCallParams.channel.joining((user) => {
           // check user availability
           const joiningUserIndex = this.videoCallParams.users.findIndex(

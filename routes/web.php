@@ -28,6 +28,11 @@ Route::get('/chat', function(){
     return view('chat1', ['users' => $users]);
 });
 
+Route::get('/test', function(){
+    $users = User::where('id', '<>', Auth::id())->get();
+    return view('videochat-js', ['users' => $users]);
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
